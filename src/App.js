@@ -7,22 +7,24 @@ export default function App() {
   const [tenzies, setTenzies] = React.useState(false);
   const [rollNum, setRollNum] = React.useState(0);
   const [isMax, setIsMax] = React.useState(false);
-  const [higher,setHigher] =React.useState( 100);
+  const oldHigher=window.localStorage.getItem("higherScore")
+  const initialHigher = oldHigher ? parseInt(oldHigher) : 100;
+  const [higher,setHigher] =React.useState(initialHigher);
   React.useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
     const first = dice[0].value;
     const allSameValue = dice.every((die) => die.value === first);
     if (allHeld && allSameValue) {
       setTenzies(true);
-      console.log(higher);
-      console.log(rollNum)
       if (rollNum < higher) {
         setHigher( rollNum);
+        window.localStorage.setItem("higherScore",rollNum)
         setIsMax(true);
       } else {
         setIsMax(false);
       }
     }
+  
   }, [dice]);
   function allNewDice() {
     const newDice = [];
